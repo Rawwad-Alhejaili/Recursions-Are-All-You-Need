@@ -1,3 +1,11 @@
+COAST/data/Training_Data.mat
+COAST/To_Be_Deleted/*
+COAST/sampling_matrix/*
+
+ISTA-Net+/data/Training_Data.mat
+ISTA-Net+/To_Be_Deleted/*
+ISTA-Net+/sampling_matrix/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
