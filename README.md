@@ -41,4 +41,5 @@ Run `COAST/TEST_COAST.py` and it will print out the results of all the configura
 ![Tables](/Figures/Tables.png)
 
 ## Acknowledgement
-Author(s) would like to acknowledge the support received from Saudi Data and AI Authority (SDAIA) and King Fahd University of Petroleum and Minerals (KFUPM) under SDAIA-KFUPM Joint Research Center for Artificial Intelligence.
+- Author(s) would like to acknowledge the support received from Saudi Data and AI Authority (SDAIA) and King Fahd University of Petroleum and Minerals (KFUPM) under SDAIA-KFUPM Joint Research Center for Artificial Intelligence.
+- In addition, we would like to thank the authors of the papers [ISTA-Net](https://github.com/jianzhangcs/ISTA-Net-PyTorch) and [COAST](https://github.com/jianzhangcs/COAST) for open-sourcing their code. This was very helpful in our work and our code borrows heavily from them.
