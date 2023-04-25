@@ -1,5 +1,6 @@
 # Recursions Are All You Need
 This repository holds the official code used in the paper:
+
 Recursions Are All You Need: Towards Efficient Deep Unfolding Networks
 
 The code was run on a Linux-based system (Ubuntu 22.04) on a single Nvidia RTX 3090 GPU, and was written using PyTorch.
@@ -14,7 +15,7 @@ Figure 1: General architecture of the recursive framework. Compared to general d
 The code is split into two directories. One for COAST and the other one is for ISTA-Net+. Currently, only the recursive COAST codes are readily available, so the recursive ISTA-Net+ code will be uploaded later.
 
 ## Training Setup
-Simply run `COAST/TRAIN_COAST.py`.
+Download the training data from [here](https://drive.google.com/file/d/14CKidNsC795vPfxFDXa1FH9QuNJKE3cp/view?usp=sharing) to the `data` directory and then run `COAST/TRAIN_COAST.py`.
 
 Arguements:
 
@@ -35,7 +36,7 @@ Arguements:
 | `--save_cycle` | Save cycle period to save the model weights (models acheving the best PSNR or SSIM scores are always saved immediately regardless of the save cycle) | 10 |
 
 ## Testing
-Run `COAST/TEST_COAST.py` and it will print out the results of all the configurations of COAST used in the paper.
+Run `COAST/TEST_COAST.py` and it will print out the results of all the configurations of COAST used in the paper (it is recommended to run them cell by cell).
 
 ## Results
 ![Tables](/Figures/Tables.png)

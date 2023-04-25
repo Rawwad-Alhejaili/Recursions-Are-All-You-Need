@@ -2,14 +2,18 @@
 
 # import os
 # cwd = os.getcwd() # Current working directory
-# print (os.getcwd())  # Prints the current working directory
-# if cwd[6:8] == 'ru':
-#     os.chdir('/home/ruwwadalhejaily/Codes/Python/COAST')
+# print(os.getcwd())  # Prints the current working directory
+# username = 'ruwwadalhejaily'
+# if cwd[6:21] == username:
+#     remote = True
+#     os.chdir('/home/ruwwadalhejaily/Codes/Python/Recursions-Are-All-You-Need/COAST')
 #     print(os.getcwd())  # Prints the current working directory
 #     os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"  #why? Preserves GPU order?
-#     os.environ["CUDA_VISIBLE_DEVICES"]="2"  # specify which GPU(s) to be used
+#     os.environ["CUDA_VISIBLE_DEVICES"]="0"  # specify which GPU(s) to be used
 #     import torch
 #     print(f'Available GPU Devices: {torch.cuda.device_count()}')
+# else:
+#     remote = False
 
 import os
 import copy
@@ -24,9 +28,11 @@ import torch.nn as nn
 import scipy.io as sio
 from argparse import ArgumentParser
 from torch.utils.data import DataLoader
-from utils import RandomDataset, write_data
 import matplotlib.pyplot as plt
+
+from utils import RandomDataset, write_data
 from timer import timer, estimate
+from generate_Gaussian_matrix import generate_Gaussian_matrix
 from show_image import show_image
 
 scaler = torch.cuda.amp.GradScaler()
@@ -118,7 +124,12 @@ for cs_ratio in train_cs_ratio_set:
     size_after_compress = ratio_dict[cs_ratio]
     Phi[cs_ratio] = np.zeros((int(rand_num * 1), size_after_compress, n_output))
     Phi_name = './%s/phi_sampling_%d_%dx%d.npy' % (args.matrix_dir, total_phi_num, size_after_compress, n_output)
-    Phi_data = np.load(Phi_name)
+    try:
+        Phi_data = np.load(Phi_name)
+    except:
+        Phi_data = generate_Gaussian_matrix(N=n_output, cs_ratio_set=[cs_ratio],total_phi_num=total_phi_num)
+        Phi_data = Phi_data[cs_ratio]
+        np.save(Phi_name, Phi_data)
     for k in range(rand_num):
         Phi[cs_ratio][k, :, :] = Phi_data[k, :, :]
 
@@ -128,7 +139,7 @@ for cs_ratio in train_cs_ratio_set:
     # Phi[cs_ratio] = Phi[cs_ratio].to(device)  # do this on-demand to free VRAM
 
 # delete unnecessary variables
-del total_phi_num, ratio_dict, cwd, k, Phi_data, Phi_name, size_after_compress
+del total_phi_num, ratio_dict, k, Phi_data, Phi_name, size_after_compress
     
     
 #%% Load the training dataset
@@ -286,6 +297,7 @@ class R_COAST(torch.nn.Module):
         
         onelayer = []
         self.LayerNo = LayerNo
+        self.IPL = IPL
         scale_bias = True
         res_scale_linear = nn.Sequential(
         nn.Linear(3, nf, bias=scale_bias),
@@ -420,8 +432,9 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 # model.load_state_dict(torch.load(model_path))
 # optimizer.load_state_dict(torch.load(optim_path))
 
+#THE BELOW LINES WERE NOT TESTED!
 if gpu_count > 1:
-    model = torch.nn.DataParallel(model)  #THIS WAS NOT TESTED!
+    model = torch.nn.DataParallel(model)
 model.to(device)
 
 psnr_loss, ssim_loss = show_image(model, Phi, [10], args, batch_size=1024*1, 

@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
 import torch
 import numpy as np
-from tqdm import tqdm
 import torch.nn as nn
-from copy import deepcopy
 
 from block import Block
 
@@ -25,9 +22,6 @@ class CPMB(nn.Module):
         
         self.nf = nf
         conv_bias = True
-        scale_bias = True
-        map_dim = 64
-        cond_dim = 2
 
         self.conv1 = nn.Conv2d(nf, nf, 3, 1, 1, bias=conv_bias)
         self.conv2 = nn.Conv2d(nf, nf, 3, 1, 1, bias=conv_bias)
@@ -161,14 +155,14 @@ class COAST(torch.nn.Module):
 
 
 class R_COAST(torch.nn.Module):
-    def __init__(self, LayerNo, feedback, max_recursion, block_size=(33,33)):
+    def __init__(self, LayerNo, feedback, IPL, block_size=(33,33)):
         super().__init__()
         
         self.feedback = feedback
         feedback = [1] * LayerNo  #temp
         onelayer = []
         self.LayerNo = LayerNo
-        self.max_recursion = max_recursion
+        self.IPL = IPL
         self.block_size = block_size
         nf = 32
         scale_bias = True
@@ -183,12 +177,12 @@ class R_COAST(torch.nn.Module):
 
         self.fcs = nn.ModuleList(onelayer)
         
-        feedback_max = [feedback[0]*max_recursion[0]] \
-                        + (np.array(feedback[1:-1])*max_recursion[1]).tolist() \
-                        + [feedback[-1]*max_recursion[2]]
+        feedback_max = [feedback[0]*IPL] \
+                        + (np.array(feedback[1:-1])*IPL).tolist() \
+                        + [feedback[-1]*IPL]
                         
         self.max_iter = sum(feedback_max)
-        self.max_recursion = max_recursion
+        self.IPL = IPL
         assert len(feedback) == LayerNo
         
         

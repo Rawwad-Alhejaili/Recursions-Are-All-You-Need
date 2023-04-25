@@ -2,26 +2,22 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import copy
 import math
 import os
-from argparse import ArgumentParser
 import glob
 import torch
 from time import time
-from tqdm import tqdm
+# from tqdm import tqdm
 import cv2
 from prettytable import PrettyTable
 try:
     from skimage.metrics import structural_similarity as ssim
 except ImportError:
     from skimage.measure import compare_ssim as ssim
-    
-from block import Block
 
 def show_image(model_tr, Phi, cs_ratios, args, batch_size=1024, block_size=None, 
                feedback=None, img_no=None, test_name='MY_TEST_DATASET',
-               model_name='COAST_Feedback', disp_image=False):
+               model_name='R-COAST', disp_image=False):
     
     if model_name.lower() == 'r-coast' or model_name.lower() == 'r_coast':
         from COAST import R_COAST as COAST_Feedback
@@ -72,8 +68,8 @@ def show_image(model_tr, Phi, cs_ratios, args, batch_size=1024, block_size=None,
             block_size = model_tr.module.block_size
     
     try:
-        max_recursion = model_tr.max_recursion
-        model = COAST_Feedback(LayerNo=len(feedback), feedback=feedback, max_recursion=max_recursion, block_size=block_size)
+        IPL = model_tr.IPL
+        model = COAST_Feedback(LayerNo=len(feedback), feedback=feedback, IPL=IPL, block_size=block_size)
     except:
         model = COAST_Feedback(LayerNo=len(feedback), feedback=feedback, block_size=block_size)
         
