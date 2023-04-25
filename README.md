@@ -11,8 +11,8 @@ The use of deep unfolding networks in compressive sensing (CS) has seen wide suc
 ![Recursive_Framework](/Figures/Recursive_Framework.png)
 Figure 1: General architecture of the recursive framework. Compared to general deep unfolding models such as COAST and ISTA-Net+, $R_i$ recursions are used in each recovery block $i$ in the recovery subnet.
 
-## General Instructions
-The code is split into two directories. One for COAST and the other one is for ISTA-Net+. Currently, only the recursive COAST codes are readily available, so the recursive ISTA-Net+ code will be uploaded later.
+[//]: # (## General Instructions)
+[//]: # (The code is split into two directories. One for COAST and the other one is for ISTA-Net+. Currently, only the recursive COAST codes are readily available, so the recursive ISTA-Net+ code will be uploaded later.)
 
 ## Training Setup
 Download the training data from [here](https://drive.google.com/file/d/14CKidNsC795vPfxFDXa1FH9QuNJKE3cp/view?usp=sharing) to the `data` directory and then run `COAST/TRAIN_COAST.py`.
